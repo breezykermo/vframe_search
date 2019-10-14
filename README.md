@@ -14,7 +14,7 @@ VFrame Search is an image search engine integrating neural networks for indexing
 After installing Docker and docker-compose, clone this repo and spin up the Docker containers:
 
 ```
-git clone https://github.com/adamhrv/vframe_search
+git clone https://github.com/vframeio/vframe_search
 cd vframe_search
 docker-compose up --build -d
 docker-compose logs -f
@@ -22,12 +22,18 @@ docker-compose logs -f
 
 Navigate to `http://0.0.0.0:5000/` to use the webapp.
 
+If the vframe interface doesn't appear, you may have to run the following command:
+```
+docker exec -it vframe_search_api_1 npm run build:dev
+```
+
 ### 2. Import your images
 
-The folder `data_store/incoming/` is shared with the VFrame Search API instance, so you must move files there first before you can import them.
+The folder `data_store/incoming/` is shared with the VFrame Search API instance, so you must move files there first before you can import them. You can download an example data set [here](vframe.ams3.digitaloceanspaces.com/v2/dev/keyframes/keyframes_1k.zip). If you are looking to use your own data, make sure that the image files are appropriately formatted by copying (that folder's structure)[docs/images.md].
 
 ```
-cp ~/Downloads/keyframes_1k/ data_store/incoming/  # or use your image dataset!
+# copy unzipped folder of images to data_store/incoming
+cp -r ~/Downloads/keyframes_1k/ data_store/incoming/
 docker exec -it vframe_search_api_1 python cli_data.py add -i ../data_store/incoming/
 ```
 
@@ -37,7 +43,6 @@ Images are copied into the database and the originals are left in the incoming f
 
 To get started, first download some pre-trained image classification models from our model zoo:
 
-* [BVLC AlexNet at 224px on Imagenet](http://0.0.0.0:5000/modelzoo/caffe_bvlc_alexnet_imagenet/show/)
 * [BVLC GoogleNet at 224px on Imagenet](http://0.0.0.0:5000/modelzoo/caffe_bvlc_googlenet_imagenet/show/)
 
 Next, [create a new feature vector](http://0.0.0.0:5000/feature/new/) for each of these networks.

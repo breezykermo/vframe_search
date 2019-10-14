@@ -8,13 +8,16 @@ Keyframes are taking from videos of YouTube playlists associated with Syrian con
 
 Before extracting features you'll need a directory of images to process. You can use JPG or PNG images. If you have video you'll need to output keyframes.
 
-- FFMPEG convert video to still frames at 2 FPS: `ffmpeg -i my_video.mp4 -r 1/2 still_frames/%05d.jpg` 
-- Convert a batch of videos: 
+- FFMPEG convert video to still frames at 2 FPS: `ffmpeg -i my_video.mp4 -r 1/2 still_frames/%05d.jpg`
+- Convert a batch of videos:
 
 ```
 for f in videos/*.mp4; do
     fn=$(basename "$f" | cut -d. -f1);
-    echo "Procedssing: $fn";
+    echo "Processing: $fn";
     ffmpeg -i videos/$f -r 1/5 "still_frames/$fn"_%05d.jpg;
 done
 ```
+
+If you are using your own set of images, ensure that they are named in
+a similar format (i.e. uniqueid_frameno.jpg).
